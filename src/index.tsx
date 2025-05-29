@@ -64,7 +64,7 @@ async function renderDialog(sdk: DialogAppSDK) {
   sdk.window.startAutoResizer();
 }
 
-async function openDialog(sdk: FieldExtensionSDK, currentValue: Asset | null, _config: any): Promise<Asset[]> {
+async function openDialog(sdk: FieldExtensionSDK, _currentValue: Asset | null, _config: any): Promise<Asset[]> {
   const result = await sdk.dialogs.openCurrentApp({
     position: 'center',
     title: DIALOG_TITLE,
