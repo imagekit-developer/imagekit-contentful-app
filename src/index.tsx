@@ -5,13 +5,7 @@ import { render } from 'react-dom';
 import { DEFAULT_INTEGRATION_PARAMETERS, DEFAULT_ML_WIDGET_OPTIONS } from './constants';
 import { DialogAppSDK, FieldExtensionSDK } from '@contentful/app-sdk';
 import { Asset } from '@contentful/dam-app-base';
-
-// Custom types for ImageKit assets
-interface ImageKitAsset {
-  fileId: string;
-  name: string;
-  url: string;
-}
+import { FileDetailsResponse } from './types/ImageKitAsset';
 
 const DIALOG_TITLE = 'Select or upload an asset from ImageKit Media Library';
 
@@ -34,15 +28,10 @@ function DialogLocation({ sdk }: { sdk: DialogAppSDK }) {
   useEffect(() => {
     const config: MediaLibraryWidgetOptions = DEFAULT_ML_WIDGET_OPTIONS;
 
-    const callback = (payload: { eventType: string, data: ImageKitAsset[] }) => {
+    const callback = (payload: { eventType: string, data: FileDetailsResponse[] }) => {
       if (payload.eventType === 'INSERT' && payload.data && payload.data.length > 0) {
-        const selectedAsset = payload.data[0];
-        const asset: Asset = {
-          id: selectedAsset.fileId,
-          title: selectedAsset.name,
-          url: selectedAsset.url
-        };
-        sdk.close([asset]);
+        const selectedAsset: Asset = payload.data[0];
+        sdk.close([selectedAsset]);
       }
     };
 
@@ -79,10 +68,5 @@ async function openDialog(sdk: FieldExtensionSDK, _currentValue: Asset | null, _
     return [];
   }
 
-  // Convert ImageKit assets to DAM Asset format
-  return result.map((asset) => ({
-    id: asset.fileId,
-    title: asset.name,
-    url: asset.url
-  }));
+  return result.map((asset: Asset) => ({ ...asset }));
 }
