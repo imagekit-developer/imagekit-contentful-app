@@ -1,6 +1,8 @@
 import { Integration } from "@contentful/dam-app-base";
 import { MediaLibraryWidgetOptions } from "imagekit-media-library-widget";
 
+export const DIALOG_TITLE = 'Select or upload an asset from ImageKit Media Library';
+
 export const DEFAULT_INTEGRATION_PARAMETERS: Partial<Integration> = {
   cta: 'Select or upload an asset',
   name: 'ImageKit Media Library',
@@ -15,12 +17,12 @@ export const DEFAULT_ML_WIDGET_OPTIONS: MediaLibraryWidgetOptions = {
   className: 'media-library-widget',
   dimensions: {
     width: '100%',
-    height: '99%',
+    height: '100%',
   },
   view: 'inline',
   renderOpenButton: false,
   mlSettings: {
-    multiple: false,
+    multiple: true,
     toolbar: {
       showCloseButton: false,
     }

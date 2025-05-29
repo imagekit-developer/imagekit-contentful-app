@@ -38,7 +38,7 @@ export interface CreatedBy {
   email: string
 }
 
-export interface FileDetailsResponse {
+export interface ImageKitAsset {
   AITags: AITagItem[] | null
   createdAt: string
   customCoordinates: string | null
