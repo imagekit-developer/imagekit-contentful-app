@@ -12,6 +12,8 @@ export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
   const url = asset.thumbnail || asset.url;
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: asset.id });
   const consoleUrl = `https://imagekit.io/dashboard/media-library/detail/${asset.fileId}`;
+  const filePath = asset?.filePath?.replace(asset.name, '');
+  const folderUrl = `https://imagekit.io/dashboard/media-library/${filePath !== "/" ? btoa(filePath) : ''}`;
 
   return (
     <div ref={setNodeRef}>
@@ -79,7 +81,14 @@ export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
                 color: tokens.gray900,
                 paddingTop: tokens.spacing2Xs,
                 paddingBottom: tokens.spacing2Xs,
-              }}>{asset?.filePath?.replace(asset.name, '')}</dd>
+              }}>
+                <a href={folderUrl} target="_blank" rel="noopener noreferrer" style={{
+                  color: tokens.gray900,
+                  textDecoration: 'underline',
+                }}>
+                  {filePath}
+                </a>
+              </dd>
               
               {asset.fileType && (
                 <>
