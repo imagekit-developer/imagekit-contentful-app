@@ -24,7 +24,7 @@ const Dialog = () => {
     const config: MediaLibraryWidgetOptions = DEFAULT_ML_WIDGET_OPTIONS;
     const callback = (payload: { eventType: string, data: ImageKitAsset[] }) => {
       if (payload.eventType === 'INSERT' && payload.data && payload.data.length > 0) {
-        sdk.close([payload.data[0]]);
+        sdk.close(payload.data);
       }
     };
 
