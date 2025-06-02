@@ -79,7 +79,7 @@ export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
                 color: tokens.gray900,
                 paddingTop: tokens.spacing2Xs,
                 paddingBottom: tokens.spacing2Xs,
-              }}>{asset.filePath.replace(asset.name, '')}</dd>
+              }}>{asset?.filePath?.replace(asset.name, '')}</dd>
               
               {asset.fileType && (
                 <>
