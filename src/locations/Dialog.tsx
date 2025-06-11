@@ -1,13 +1,25 @@
 import { DialogAppSDK } from '@contentful/app-sdk';
 import { useSDK } from '@contentful/react-apps-toolkit';
 import { injectGlobal } from '@emotion/css';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FileTypeValue, ImagekitMediaLibraryWidget, MediaLibraryWidgetOptions, MLSettings } from 'imagekit-media-library-widget';
 import { DEFAULT_ML_WIDGET_OPTIONS } from '../constants';
 import { ImageKitAsset } from '../types/ImageKitAsset';
 
 const Dialog = () => {
   const sdk = useSDK<DialogAppSDK>();
+  const installationConfig: MLSettings = useMemo(() => {
+    return {
+      multiple: sdk.parameters.installation.allowMultipleSelections,
+      maxFiles: sdk.parameters.installation.maxFileSelections ? parseInt(sdk.parameters.installation.maxFileSelections) : undefined,
+      initialView: {
+        searchQuery: sdk.parameters.installation.searchQuery || '',
+        folderPath: sdk.parameters.installation.folderPath || '/',
+        collection: sdk.parameters.installation.collectionId ? { id: sdk.parameters.installation.collectionId } : undefined,
+        fileType: sdk.parameters.installation.fileType ? sdk.parameters.installation.fileType as FileTypeValue : undefined,
+      }
+    };
+  }, [sdk.parameters.installation]);
 
   useEffect(() => {
     // style `body`
@@ -20,17 +32,6 @@ const Dialog = () => {
         overflow: 'hidden',
       },
     });
-
-    const installationConfig: MLSettings = {
-      multiple: sdk.parameters.installation.allowMultipleSelections,
-      maxFiles: sdk.parameters.installation.maxFileSelections ? parseInt(sdk.parameters.installation.maxFileSelections) : undefined,
-      initialView: {
-        searchQuery: sdk.parameters.installation.searchQuery || '',
-        folderPath: sdk.parameters.installation.folderPath || '/',
-        collection: sdk.parameters.installation.collectionId ? { id: sdk.parameters.installation.collectionId } : undefined,
-        fileType: sdk.parameters.installation.fileType ? sdk.parameters.installation.fileType as FileTypeValue : undefined,
-      }
-    }
 
     // Merge the installation config with the default config
     const config: MediaLibraryWidgetOptions = {
