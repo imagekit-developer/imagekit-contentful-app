@@ -33,6 +33,8 @@ const DEFAULT_PARAMETERS: Parameters = {
   mediaQuality: 'auto'
 };
 
+const codeBlockStyle = { fontSize: '12px', fontWeight: 'bold', border: '1px solid #ccc', padding: '2px 4px', borderRadius: '4px' };
+
 const ConfigScreen = () => {
   const sdk = useSDK<ConfigAppSDK>();
   const [parameters, setParameters] = useState<Parameters>(DEFAULT_PARAMETERS);
@@ -143,7 +145,9 @@ const ConfigScreen = () => {
         </div>
         <Heading>About ImageKit</Heading>
         <Paragraph>
-          The ImageKit app allows editors to select media from their ImageKit Media Library. Select the asset from ImageKit that you want your entry to reference.
+          ImageKit makes it easy to store, manage, optimize and deliver your media assets at scale. Using this integration, you can directly select and use these assets in your
+          Contentful entries and pages, and even upload new assets directly to your ImageKit Media Library, making this the perfect way to manage your media workflows without
+          leaving Contentful.
         </Paragraph>
         <hr style={{
           marginTop: tokens.spacingL,
@@ -155,7 +159,7 @@ const ConfigScreen = () => {
         
         <Heading as="h2" marginTop="spacingL">Quickstart</Heading>
         <Paragraph>
-          To start using ImageKit, the only thing you need to provide is your URL endpoint. You can find it in the <a href="https://imagekit.io/dashboard/developer/api-keys" target="_blank" rel="noopener noreferrer">Developer options</a> of your ImageKit Dashboard.
+          Getting started with ImageKit is easy and takes less than a minute. To start using this integration, you need to provide your ImageKit URL Endpoint, which can be found in the <a href="https://imagekit.io/dashboard/developer/api-keys" target="_blank" rel="noopener noreferrer">Developer options</a> on your ImageKit Dashboard.
         </Paragraph>
 
         <Form style={{ marginTop: tokens.spacingL }}>
@@ -167,13 +171,14 @@ const ConfigScreen = () => {
               value={parameters.urlEndpoint}
               onChange={(e) => handleInputChange(e, e.target.value)}
             />
-            <FormControl.HelpText>Your ImageKit URL endpoint should look like <code style={{ fontSize: '12px', fontWeight: 'bold', border: '1px solid #ccc', padding: '2px 4px', borderRadius: '4px' }}>https://ik.imagekit.io/&lt;your_imagekit_id&gt;</code></FormControl.HelpText>
+            <FormControl.HelpText>Your ImageKit URL endpoint should look like <code style={codeBlockStyle}>https://ik.imagekit.io/&lt;your_imagekit_id&gt;</code></FormControl.HelpText>
           </FormControl>
         </Form>
         
         <Paragraph>
-          Once you have set up your URL endpoint, you can start using ImageKit directly in your content models and entries. In case you&apos;d like to configure the media library
-          widget, you can do so in the advanced configuration below.
+          Once you have set up your URL endpoint, you can start using ImageKit directly in your content models and entries by selecting the "JSON Object" field type.
+          <br /><br />
+          In case you&apos;d like to configure the media library widget, you can do so in the advanced configuration below.
         </Paragraph>
 
         <div style={{
@@ -189,7 +194,9 @@ const ConfigScreen = () => {
           backgroundColor: tokens.gray100,
           width: 'fit-content',
         }}
-        onClick={() => setShowAdvancedConfiguration(!showAdvancedConfiguration)}
+        onClick={() => {
+          setShowAdvancedConfiguration(!showAdvancedConfiguration);
+        }}
         >
           {showAdvancedConfiguration ? <ChevronUpIcon /> : <ChevronDownIcon />}
           <Text fontWeight="fontWeightMedium">Advanced Configuration</Text>
@@ -200,102 +207,27 @@ const ConfigScreen = () => {
             <div style={{
               animation: 'fadeIn 0.3s ease-in-out',
             }}>
-              <Heading as="h2" marginTop="spacingL">Advanced Configuration</Heading>
+              <Heading as="h2" marginTop="spacingL" id="advanced-configuration">Advanced Configuration</Heading>
+
+              <Heading as="h3" marginTop="spacingL">Media Delivery</Heading>
+              <Paragraph>
+                These configurations are used to control the delivery of the media assets that are selected from the Media Library Widget and used in your entries.
+                <br /><br />
+                <strong>Note:</strong> These settings do not affect the delivery of assets already referenced in your entries. To make sure that the assets are delivered
+                with the correct settings, you need to update the asset URLs in your entries manually or remove and re-insert the assets.
+              </Paragraph>
 
               <Form style={{ marginTop: tokens.spacingL }}>
                 <FormControl marginTop="spacingM">
-                  <FormControl.Label>Folder Path</FormControl.Label>
-                  <TextInput
-                    name="folderPath"
-                    id="folderPath"
-                    value={parameters.folderPath}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
-                    placeholder="/path/to/folder"
-                  />
-                  <FormControl.HelpText>The folder to open by default in the Media Library Widget. Default is the root folder (i.e. '/')</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <FormControl.Label>Collection ID</FormControl.Label>
-                  <TextInput
-                    name="collectionId"
-                    id="collectionId"
-                    value={parameters.collectionId}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
-                    placeholder="Enter Collection ID"
-                  />
-                  <FormControl.HelpText>Specific collection to open in the widget</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <FormControl.Label>File Type Filter</FormControl.Label>
-                  <TextInput
-                    name="fileType"
-                    id="fileType"
-                    value={parameters.fileType}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
-                    placeholder="e.g. image, video"
-                  />
-                  <FormControl.HelpText>Filter to show specific types of files (comma-separated)</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <FormControl.Label>Search Query</FormControl.Label>
-                  <TextInput
-                    name="searchQuery"
-                    id="searchQuery"
-                    value={parameters.searchQuery}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
-                    placeholder="Default search query"
-                  />
-                  <FormControl.HelpText>Default search query when opening the widget</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <Checkbox
-                    name="allowMultipleSelections"
-                    id="allowMultipleSelections"
-                    isChecked={parameters.allowMultipleSelections}
-                    onChange={(e) => handleInputChange(e, e.target.checked)}
-                  >
-                    Allow Multiple Selections
-                  </Checkbox>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <FormControl.Label>Maximum Files Selection</FormControl.Label>
-                  <TextInput
-                    name="maxFileSelections"
-                    id="maxFileSelections"
-                    type="number"
-                    value={parameters.maxFileSelections?.toString() || ''}
-                    onChange={(e) => handleInputChange(e, e.target.value ? parseInt(e.target.value) : null)}
-                    min="1"
-                  />
-                  <FormControl.HelpText>Maximum number of files that can be selected</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <FormControl.Label>Default Transformation</FormControl.Label>
+                  <FormControl.Label>Default Transformation String</FormControl.Label>
                   <TextInput
                     name="defaultTransformation"
                     id="defaultTransformation"
                     value={parameters.defaultTransformation}
                     onChange={(e) => handleInputChange(e, e.target.value)}
-                    placeholder="w-200,h-200 or transformation-name"
+                    placeholder="w-200,h-200 or any named transformation"
                   />
-                  <FormControl.HelpText>Default transformation to apply to selected assets</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
-                  <Checkbox
-                    name="allowUploads"
-                    id="allowUploads"
-                    isChecked={parameters.allowUploads}
-                    onChange={(e) => handleInputChange(e, e.target.checked)}
-                  >
-                    Allow Uploads
-                  </Checkbox>
+                  <FormControl.HelpText>This transformation will be applied to all assets selected from the Media Library Widget. (Leave this blank to use ImageKit's default optimization settings)</FormControl.HelpText>
                 </FormControl>
 
                 <FormControl marginTop="spacingM">
@@ -312,10 +244,102 @@ const ConfigScreen = () => {
                       </Select.Option>
                     ))}
                   </Select>
-                  <FormControl.HelpText>Quality setting for all media assets</FormControl.HelpText>
+                  <FormControl.HelpText>This quality setting will be applied to all assets selected from the Media Library Widget. (Default: <code style={codeBlockStyle}>Auto</code> i.e. use ImageKit's default quality settings)</FormControl.HelpText>
                 </FormControl>
               </Form>
-            </div>
+
+              <Heading as="h3" marginTop="spacingL">Widget Settings</Heading>
+              <Paragraph>
+                These configurations are used to control the behavior of the Media Library Widget that is used to select and upload media assets.
+              </Paragraph>
+
+              <Form style={{ marginTop: tokens.spacingL }}>
+                <FormControl marginTop="spacingM">
+                  <Checkbox
+                    name="allowUploads"
+                    id="allowUploads"
+                    isChecked={parameters.allowUploads}
+                    onChange={(e) => handleInputChange(e, e.target.checked)}
+                  >
+                    Allow Uploads
+                  </Checkbox>
+                  <FormControl.HelpText>Allow users to upload new assets to your ImageKit Media Library from within Contentful.</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Starting Folder Path</FormControl.Label>
+                  <TextInput
+                    name="folderPath"
+                    id="folderPath"
+                    value={parameters.folderPath}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                  />
+                  <FormControl.HelpText>The folder to open when the Media Library Widget is opened. (Default: <code style={codeBlockStyle}>/</code> i.e. the root folder)</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Starting Collection ID</FormControl.Label>
+                  <TextInput
+                    name="collectionId"
+                    id="collectionId"
+                    value={parameters.collectionId}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                  />
+                  <FormControl.HelpText>The ID of the specific collection to open when the Media Library Widget is opened. (Leave this blank if you do not want to open any collection)</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>File Type</FormControl.Label>
+                  <TextInput
+                    name="fileType"
+                    id="fileType"
+                    value={parameters.fileType}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    placeholder="e.g. images"
+                  />
+                  <FormControl.HelpText>Set this to show only specific types of files when the Media Library Widget is opened. Supported options are <code style={codeBlockStyle}>"images" | "videos" | "cssJs" | "others"</code>. (Leave this blank to show all types of files which is the default behavior)</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Default Search Query</FormControl.Label>
+                  <TextInput
+                    name="searchQuery"
+                    id="searchQuery"
+                    value={parameters.searchQuery}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                  />
+                  <FormControl.HelpText>The search query to be used when the Media Library Widget is opened. (Leave this blank to open the widget with no search query which is the default behavior)</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <Checkbox
+                    name="allowMultipleSelections"
+                    id="allowMultipleSelections"
+                    isChecked={parameters.allowMultipleSelections}
+                    onChange={(e) => handleInputChange(e, e.target.checked)}
+                  >
+                    Allow Multiple Selections
+                  </Checkbox>
+                </FormControl>
+
+                {
+                  parameters.allowMultipleSelections && (
+                    <FormControl marginTop="spacingM">
+                      <FormControl.Label>Maximum Number of Files Per Selection</FormControl.Label>
+                      <TextInput
+                        name="maxFileSelections"
+                        id="maxFileSelections"
+                        type="number"
+                        value={parameters.maxFileSelections?.toString() || ''}
+                        onChange={(e) => handleInputChange(e, e.target.value ? parseInt(e.target.value) : null)}
+                        min="1"
+                      />
+                      <FormControl.HelpText>Maximum number of files that can be selected per selection. (Leave this blank to allow unlimited selections which is the default behavior)</FormControl.HelpText>
+                    </FormControl>
+                  )
+                }
+              </Form>
+          </div>
           )
         }
       </div>
