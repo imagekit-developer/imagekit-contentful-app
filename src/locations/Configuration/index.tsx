@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from 'react';
 
 interface Parameters {
   installationUuid: string;
-  apiKey: string;
   urlEndpoint: string;
   publicKey: string;
   folderPath: string;
@@ -22,7 +21,6 @@ interface Parameters {
 
 const DEFAULT_PARAMETERS: Parameters = {
   installationUuid: '',
-  apiKey: '',
   urlEndpoint: '',
   publicKey: '',
   folderPath: '',
@@ -140,19 +138,6 @@ const ConfigScreen = () => {
         </Paragraph>
 
         <Form style={{ marginTop: tokens.spacingL }}>
-          <FormControl isRequired>
-            <FormControl.Label>API Key</FormControl.Label>
-            <TextInput
-              name="apiKey"
-              id="apiKey"
-              value={parameters.apiKey}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="Enter your ImageKit API Key"
-              type="password"
-            />
-            <FormControl.HelpText>You can find this in your ImageKit dashboard under Developer Options</FormControl.HelpText>
-          </FormControl>
-
           <FormControl isRequired marginTop="spacingM">
             <FormControl.Label>URL Endpoint</FormControl.Label>
             <TextInput
@@ -162,7 +147,7 @@ const ConfigScreen = () => {
               onChange={(e) => handleInputChange(e, e.target.value)}
               placeholder="https://ik.imagekit.io/your_imagekit_id"
             />
-            <FormControl.HelpText>Your ImageKit URL endpoint (e.g., https://ik.imagekit.io/your_imagekit_id)</FormControl.HelpText>
+            <FormControl.HelpText>Your ImageKit URL endpoint (e.g. https://ik.imagekit.io/your_imagekit_id)</FormControl.HelpText>
           </FormControl>
 
           <FormControl isRequired marginTop="spacingM">
@@ -174,7 +159,7 @@ const ConfigScreen = () => {
               onChange={(e) => handleInputChange(e, e.target.value)}
               placeholder="Enter your ImageKit Public Key"
             />
-            <FormControl.HelpText>Your ImageKit Public Key for SDK initialization</FormControl.HelpText>
+            <FormControl.HelpText>Your ImageKit Public Key (e.g. public_xxxxxxxxxxxxxxxxxxxxxxxxxxxx)</FormControl.HelpText>
           </FormControl>
 
           <FormControl marginTop="spacingM">
@@ -208,7 +193,7 @@ const ConfigScreen = () => {
               id="fileType"
               value={parameters.fileType}
               onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="e.g., image, video"
+              placeholder="e.g. image, video"
             />
             <FormControl.HelpText>Filter to show specific types of files (comma-separated)</FormControl.HelpText>
           </FormControl>
