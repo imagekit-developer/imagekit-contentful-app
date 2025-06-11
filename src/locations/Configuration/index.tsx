@@ -97,7 +97,7 @@ const ConfigScreen = () => {
     })),
   ];
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, value: string | boolean | number | null) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, value: string | boolean | number | null) => {
     const key: keyof Parameters = event.target.name as keyof Parameters;
     setParameters(prev => ({
       ...prev,
@@ -169,7 +169,7 @@ const ConfigScreen = () => {
               name="urlEndpoint"
               id="urlEndpoint"
               value={parameters.urlEndpoint}
-              onChange={(e) => handleInputChange(e, e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
             />
             <FormControl.HelpText>Your ImageKit URL endpoint should look like <code style={codeBlockStyle}>https://ik.imagekit.io/&lt;your_imagekit_id&gt;</code></FormControl.HelpText>
           </FormControl>
@@ -224,7 +224,7 @@ const ConfigScreen = () => {
                     name="defaultTransformation"
                     id="defaultTransformation"
                     value={parameters.defaultTransformation}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                     placeholder="w-200,h-200 or any named transformation"
                   />
                   <FormControl.HelpText>This transformation will be applied to all assets selected from the Media Library Widget. (Leave this blank to use ImageKit's default optimization settings)</FormControl.HelpText>
@@ -236,7 +236,7 @@ const ConfigScreen = () => {
                     name="mediaQuality"
                     id="mediaQuality"
                     value={parameters.mediaQuality}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange(e, e.target.value)}
                   >
                     {mediaQualityOptions.map(option => (
                       <Select.Option key={option.value} value={option.value}>
@@ -259,7 +259,7 @@ const ConfigScreen = () => {
                     name="allowUploads"
                     id="allowUploads"
                     isChecked={parameters.allowUploads}
-                    onChange={(e) => handleInputChange(e, e.target.checked)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.checked)}
                   >
                     Allow Uploads
                   </Checkbox>
@@ -272,7 +272,7 @@ const ConfigScreen = () => {
                     name="folderPath"
                     id="folderPath"
                     value={parameters.folderPath}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                   />
                   <FormControl.HelpText>The folder to open when the Media Library Widget is opened. (Default: <code style={codeBlockStyle}>/</code> i.e. the root folder)</FormControl.HelpText>
                 </FormControl>
@@ -283,7 +283,7 @@ const ConfigScreen = () => {
                     name="collectionId"
                     id="collectionId"
                     value={parameters.collectionId}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                   />
                   <FormControl.HelpText>The ID of the specific collection to open when the Media Library Widget is opened. (Leave this blank if you do not want to open any collection)</FormControl.HelpText>
                 </FormControl>
@@ -294,7 +294,7 @@ const ConfigScreen = () => {
                     name="fileType"
                     id="fileType"
                     value={parameters.fileType}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                     placeholder="e.g. images"
                   />
                   <FormControl.HelpText>Set this to show only specific types of files when the Media Library Widget is opened. Supported options are <code style={codeBlockStyle}>"images" | "videos" | "cssJs" | "others"</code>. (Leave this blank to show all types of files which is the default behavior)</FormControl.HelpText>
@@ -306,7 +306,7 @@ const ConfigScreen = () => {
                     name="searchQuery"
                     id="searchQuery"
                     value={parameters.searchQuery}
-                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                   />
                   <FormControl.HelpText>The search query to be used when the Media Library Widget is opened. (Leave this blank to open the widget with no search query which is the default behavior)</FormControl.HelpText>
                 </FormControl>
@@ -316,7 +316,7 @@ const ConfigScreen = () => {
                     name="allowMultipleSelections"
                     id="allowMultipleSelections"
                     isChecked={parameters.allowMultipleSelections}
-                    onChange={(e) => handleInputChange(e, e.target.checked)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.checked)}
                   >
                     Allow Multiple Selections
                   </Checkbox>
@@ -331,7 +331,7 @@ const ConfigScreen = () => {
                         id="maxFileSelections"
                         type="number"
                         value={parameters.maxFileSelections?.toString() || ''}
-                        onChange={(e) => handleInputChange(e, e.target.value ? parseInt(e.target.value) : null)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value ? parseInt(e.target.value) : null)}
                         min="1"
                       />
                       <FormControl.HelpText>Maximum number of files that can be selected per selection. (Leave this blank to allow unlimited selections which is the default behavior)</FormControl.HelpText>
