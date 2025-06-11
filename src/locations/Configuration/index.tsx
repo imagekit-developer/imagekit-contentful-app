@@ -15,7 +15,6 @@ interface Parameters {
   allowMultipleSelections: boolean;
   maxFileSelections: string;
   defaultTransformation: string;
-  allowUploads: boolean;
   mediaQuality: string;
 }
 
@@ -29,7 +28,6 @@ const DEFAULT_PARAMETERS: Parameters = {
   allowMultipleSelections: true,
   maxFileSelections: '',
   defaultTransformation: '',
-  allowUploads: true,
   mediaQuality: 'auto'
 };
 
@@ -255,18 +253,6 @@ const ConfigScreen = () => {
 
               <Form style={{ marginTop: tokens.spacingL }}>
                 <FormControl marginTop="spacingM">
-                  <Checkbox
-                    name="allowUploads"
-                    id="allowUploads"
-                    isChecked={parameters.allowUploads}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.checked)}
-                  >
-                    Allow Uploads
-                  </Checkbox>
-                  <FormControl.HelpText>Allow users to upload new assets to your ImageKit Media Library from within Contentful.</FormControl.HelpText>
-                </FormControl>
-
-                <FormControl marginTop="spacingM">
                   <FormControl.Label>Starting Folder Path</FormControl.Label>
                   <TextInput
                     name="folderPath"
@@ -295,9 +281,9 @@ const ConfigScreen = () => {
                     id="fileType"
                     value={parameters.fileType}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
-                    placeholder="e.g. images"
+                    placeholder="e.g. image"
                   />
-                  <FormControl.HelpText>Set this to show only specific types of files when the Media Library Widget is opened. Supported options are <code style={codeBlockStyle}>"images" | "videos" | "cssJs" | "others"</code>. (Leave this blank to show all types of files which is the default behavior)</FormControl.HelpText>
+                  <FormControl.HelpText>Set this to show only specific types of files when the Media Library Widget is opened. Supported options are <code style={codeBlockStyle}>"image" | "video" | "cssJs" | "others"</code>. (Leave this blank to show all types of files which is the default behavior)</FormControl.HelpText>
                 </FormControl>
 
                 <FormControl marginTop="spacingM">

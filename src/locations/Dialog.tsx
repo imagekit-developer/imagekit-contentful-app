@@ -2,7 +2,7 @@ import { DialogAppSDK } from '@contentful/app-sdk';
 import { useSDK } from '@contentful/react-apps-toolkit';
 import { injectGlobal } from '@emotion/css';
 import { useEffect } from 'react';
-import { ImagekitMediaLibraryWidget, MediaLibraryWidgetOptions } from 'imagekit-media-library-widget';
+import { FileTypeValue, ImagekitMediaLibraryWidget, MediaLibraryWidgetOptions, MLSettings } from 'imagekit-media-library-widget';
 import { DEFAULT_ML_WIDGET_OPTIONS } from '../constants';
 import { ImageKitAsset } from '../types/ImageKitAsset';
 
@@ -21,12 +21,34 @@ const Dialog = () => {
       },
     });
 
-    const config: MediaLibraryWidgetOptions = DEFAULT_ML_WIDGET_OPTIONS;
+    const installationConfig: MLSettings = {
+      multiple: sdk.parameters.installation.allowMultipleSelections,
+      maxFiles: sdk.parameters.installation.maxFileSelections ? parseInt(sdk.parameters.installation.maxFileSelections) : undefined,
+      initialView: {
+        searchQuery: sdk.parameters.installation.searchQuery || '',
+        folderPath: sdk.parameters.installation.folderPath || '/',
+        collection: sdk.parameters.installation.collectionId ? { id: sdk.parameters.installation.collectionId } : undefined,
+        fileType: sdk.parameters.installation.fileType ? sdk.parameters.installation.fileType as FileTypeValue : undefined,
+      }
+    }
+
+    // Merge the installation config with the default config
+    const config: MediaLibraryWidgetOptions = {
+      ...DEFAULT_ML_WIDGET_OPTIONS,
+      mlSettings: {
+        ...DEFAULT_ML_WIDGET_OPTIONS.mlSettings,
+        ...installationConfig,
+      },
+    };
+
+    console.log('config', config);
+
     const callback = (payload: { eventType: string, data: ImageKitAsset[] }) => {
       if (payload.eventType === 'INSERT' && payload.data && payload.data.length > 0) {
         sdk.close(payload.data);
       }
     };
+  
 
     const widget = new ImagekitMediaLibraryWidget(config, callback);
     widget.open();
@@ -34,7 +56,7 @@ const Dialog = () => {
     sdk.window.updateHeight(window.outerHeight);
 
     return () => {
-      // Cleanup if needed
+      widget.destroy();
     };
   }, [sdk]);
 
