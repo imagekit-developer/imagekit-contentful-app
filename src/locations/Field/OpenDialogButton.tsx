@@ -5,6 +5,7 @@ import { useSDK } from '@contentful/react-apps-toolkit';
 import { useCallback } from 'react';
 import { ImageKitAsset } from '../../types/ImageKitAsset';
 import { DEFAULT_INTEGRATION_PARAMETERS, DIALOG_TITLE } from '../../constants';
+import { buildSrc, Transformation } from '@imagekit/react';
 
 interface Props {
   onNewAssetsAdded: (assets: ImageKitAsset[]) => void;
@@ -26,9 +27,38 @@ export function OpenDialogButton({ onNewAssetsAdded, isDisabled }: Props) {
       return;
     }
 
-    console.log('result', result);
+    console.log('sdk.parameters.installation', sdk.parameters.installation);
 
-    onNewAssetsAdded(result);
+    const defaultTransformation = sdk.parameters.installation.defaultTransformation;
+    const transformation: Transformation[] = defaultTransformation ? [{ raw: defaultTransformation }] : [];
+
+    if (sdk.parameters.installation.mediaQuality !== 'auto') {
+      transformation.push({
+        quality: sdk.parameters.installation.mediaQuality,
+      });
+    }
+
+    // Tranform the assets based on the parameters
+    // set in the configuration screen
+    const transformedAssets = result.map((asset: ImageKitAsset) => {
+      // Only transform images
+      if (asset.fileType === 'image') {
+        return {
+          ...asset,
+          url: buildSrc({
+            src: asset.url,
+            urlEndpoint: sdk.parameters.installation.urlEndpoint || '',
+            transformation,
+          }),
+        };
+      }
+
+      return asset;
+    });
+
+    console.log('transformedAssets', transformedAssets.map((asset: ImageKitAsset) => asset.url.split('tr=')[1]));
+
+    onNewAssetsAdded(transformedAssets);
   }, [onNewAssetsAdded, sdk.dialogs]);
 
   return (

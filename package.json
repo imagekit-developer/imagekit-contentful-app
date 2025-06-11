@@ -9,6 +9,7 @@
     "@contentful/react-apps-toolkit": "^1.2.16",
     "@emotion/css": "^11.13.5",
     "@emotion/react": "^11.14.0",
+    "@imagekit/react": "^5.0.1",
     "file-size": "^1.0.0",
     "imagekit-media-library-widget": "^2.1.1",
     "react": "^18.3.1",

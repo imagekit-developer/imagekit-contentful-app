@@ -1,13 +1,13 @@
-import { Form, FormControl, GlobalStyles, Heading, Paragraph, TextInput, Checkbox, Select } from '@contentful/f36-components';
+import { Form, FormControl, GlobalStyles, Heading, Paragraph, TextInput, Checkbox, Select, Text } from '@contentful/f36-components';
 import tokens from '@contentful/f36-tokens';
 import { useSDK } from '@contentful/react-apps-toolkit';
 import { ConfigAppSDK } from '@contentful/app-sdk';
 import { useCallback, useEffect, useState } from 'react';
+import { ChevronDownIcon, ChevronUpIcon } from '@contentful/f36-icons';
 
 interface Parameters {
   installationUuid: string;
   urlEndpoint: string;
-  publicKey: string;
   folderPath: string;
   collectionId: string;
   fileType: string;
@@ -22,7 +22,6 @@ interface Parameters {
 const DEFAULT_PARAMETERS: Parameters = {
   installationUuid: '',
   urlEndpoint: '',
-  publicKey: '',
   folderPath: '/',
   collectionId: '',
   fileType: '',
@@ -37,6 +36,7 @@ const DEFAULT_PARAMETERS: Parameters = {
 const ConfigScreen = () => {
   const sdk = useSDK<ConfigAppSDK>();
   const [parameters, setParameters] = useState<Parameters>(DEFAULT_PARAMETERS);
+  const [showAdvancedConfiguration, setShowAdvancedConfiguration] = useState(false);
 
   const onConfigure = useCallback(async () => {
     // This method will be called when a user clicks on "Install"
@@ -89,7 +89,6 @@ const ConfigScreen = () => {
 
   const mediaQualityOptions = [
     { label: 'Auto', value: 'auto' },
-    { label: 'Original', value: 'original' },
     ...Array.from({ length: 10 }, (_, i) => ({
       label: `${(i + 1) * 10}`,
       value: `${(i + 1) * 10}`,
@@ -154,9 +153,9 @@ const ConfigScreen = () => {
           backgroundColor: tokens.gray300,
         }} />
         
-        <Heading as="h2" marginTop="spacingL">Configuration</Heading>
+        <Heading as="h2" marginTop="spacingL">Quickstart</Heading>
         <Paragraph>
-          To set up the ImageKit integration, please provide your ImageKit credentials below:
+          To start using ImageKit, the only thing you need to provide is your URL endpoint. You can find it in the <a href="https://imagekit.io/dashboard/developer/api-keys" target="_blank" rel="noopener noreferrer">Developer options</a> of your ImageKit Dashboard.
         </Paragraph>
 
         <Form style={{ marginTop: tokens.spacingL }}>
@@ -167,135 +166,158 @@ const ConfigScreen = () => {
               id="urlEndpoint"
               value={parameters.urlEndpoint}
               onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="https://ik.imagekit.io/your_imagekit_id"
             />
-            <FormControl.HelpText>Your ImageKit URL endpoint (e.g. https://ik.imagekit.io/your_imagekit_id)</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl isRequired marginTop="spacingM">
-            <FormControl.Label>Public Key</FormControl.Label>
-            <TextInput
-              name="publicKey"
-              id="publicKey"
-              value={parameters.publicKey}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="Enter your ImageKit Public Key"
-            />
-            <FormControl.HelpText>Your ImageKit Public Key (e.g. public_xxxxxxxxxxxxxxxxxxxxxxxxxxxx)</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>Folder Path</FormControl.Label>
-            <TextInput
-              name="folderPath"
-              id="folderPath"
-              value={parameters.folderPath}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="/path/to/folder"
-            />
-            <FormControl.HelpText>Default folder to open in Media Library Widget</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>Collection ID</FormControl.Label>
-            <TextInput
-              name="collectionId"
-              id="collectionId"
-              value={parameters.collectionId}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="Enter Collection ID"
-            />
-            <FormControl.HelpText>Specific collection to open in the widget</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>File Type Filter</FormControl.Label>
-            <TextInput
-              name="fileType"
-              id="fileType"
-              value={parameters.fileType}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="e.g. image, video"
-            />
-            <FormControl.HelpText>Filter to show specific types of files (comma-separated)</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>Search Query</FormControl.Label>
-            <TextInput
-              name="searchQuery"
-              id="searchQuery"
-              value={parameters.searchQuery}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="Default search query"
-            />
-            <FormControl.HelpText>Default search query when opening the widget</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <Checkbox
-              name="allowMultipleSelections"
-              id="allowMultipleSelections"
-              isChecked={parameters.allowMultipleSelections}
-              onChange={(e) => handleInputChange(e, e.target.checked)}
-            >
-              Allow Multiple Selections
-            </Checkbox>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>Maximum Files Selection</FormControl.Label>
-            <TextInput
-              name="maxFileSelections"
-              id="maxFileSelections"
-              type="number"
-              value={parameters.maxFileSelections?.toString() || ''}
-              onChange={(e) => handleInputChange(e, e.target.value ? parseInt(e.target.value) : null)}
-              min="1"
-            />
-            <FormControl.HelpText>Maximum number of files that can be selected</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>Default Transformation</FormControl.Label>
-            <TextInput
-              name="defaultTransformation"
-              id="defaultTransformation"
-              value={parameters.defaultTransformation}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-              placeholder="tr:w-200,h-200 or transformation-name"
-            />
-            <FormControl.HelpText>Default transformation to apply to selected assets</FormControl.HelpText>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <Checkbox
-              name="allowUploads"
-              id="allowUploads"
-              isChecked={parameters.allowUploads}
-              onChange={(e) => handleInputChange(e, e.target.checked)}
-            >
-              Allow Uploads
-            </Checkbox>
-          </FormControl>
-
-          <FormControl marginTop="spacingM">
-            <FormControl.Label>Media Quality</FormControl.Label>
-            <Select
-              name="mediaQuality"
-              id="mediaQuality"
-              value={parameters.mediaQuality}
-              onChange={(e) => handleInputChange(e, e.target.value)}
-            >
-              {mediaQualityOptions.map(option => (
-                <Select.Option key={option.value} value={option.value}>
-                  {option.label}
-                </Select.Option>
-              ))}
-            </Select>
-            <FormControl.HelpText>Quality setting for all media assets</FormControl.HelpText>
+            <FormControl.HelpText>Your ImageKit URL endpoint should look like <code style={{ fontSize: '12px', fontWeight: 'bold', border: '1px solid #ccc', padding: '2px 4px', borderRadius: '4px' }}>https://ik.imagekit.io/&lt;your_imagekit_id&gt;</code></FormControl.HelpText>
           </FormControl>
         </Form>
+        
+        <Paragraph>
+          Once you have set up your URL endpoint, you can start using ImageKit directly in your content models and entries. In case you&apos;d like to configure the media library
+          widget, you can do so in the advanced configuration below.
+        </Paragraph>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: tokens.spacingXs,
+          marginTop: tokens.spacingL,
+          padding: tokens.spacingS,
+          border: `1px solid ${tokens.gray300}`,
+          borderRadius: tokens.borderRadiusMedium,
+          cursor: 'pointer',
+          userSelect: 'none',
+          backgroundColor: tokens.gray100,
+          width: 'fit-content',
+        }}
+        onClick={() => setShowAdvancedConfiguration(!showAdvancedConfiguration)}
+        >
+          {showAdvancedConfiguration ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          <Text fontWeight="fontWeightMedium">Advanced Configuration</Text>
+        </div>
+
+        {
+          showAdvancedConfiguration && (
+            <div style={{
+              animation: 'fadeIn 0.3s ease-in-out',
+            }}>
+              <Heading as="h2" marginTop="spacingL">Advanced Configuration</Heading>
+
+              <Form style={{ marginTop: tokens.spacingL }}>
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Folder Path</FormControl.Label>
+                  <TextInput
+                    name="folderPath"
+                    id="folderPath"
+                    value={parameters.folderPath}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    placeholder="/path/to/folder"
+                  />
+                  <FormControl.HelpText>The folder to open by default in the Media Library Widget. Default is the root folder (i.e. '/')</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Collection ID</FormControl.Label>
+                  <TextInput
+                    name="collectionId"
+                    id="collectionId"
+                    value={parameters.collectionId}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    placeholder="Enter Collection ID"
+                  />
+                  <FormControl.HelpText>Specific collection to open in the widget</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>File Type Filter</FormControl.Label>
+                  <TextInput
+                    name="fileType"
+                    id="fileType"
+                    value={parameters.fileType}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    placeholder="e.g. image, video"
+                  />
+                  <FormControl.HelpText>Filter to show specific types of files (comma-separated)</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Search Query</FormControl.Label>
+                  <TextInput
+                    name="searchQuery"
+                    id="searchQuery"
+                    value={parameters.searchQuery}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    placeholder="Default search query"
+                  />
+                  <FormControl.HelpText>Default search query when opening the widget</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <Checkbox
+                    name="allowMultipleSelections"
+                    id="allowMultipleSelections"
+                    isChecked={parameters.allowMultipleSelections}
+                    onChange={(e) => handleInputChange(e, e.target.checked)}
+                  >
+                    Allow Multiple Selections
+                  </Checkbox>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Maximum Files Selection</FormControl.Label>
+                  <TextInput
+                    name="maxFileSelections"
+                    id="maxFileSelections"
+                    type="number"
+                    value={parameters.maxFileSelections?.toString() || ''}
+                    onChange={(e) => handleInputChange(e, e.target.value ? parseInt(e.target.value) : null)}
+                    min="1"
+                  />
+                  <FormControl.HelpText>Maximum number of files that can be selected</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Default Transformation</FormControl.Label>
+                  <TextInput
+                    name="defaultTransformation"
+                    id="defaultTransformation"
+                    value={parameters.defaultTransformation}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                    placeholder="w-200,h-200 or transformation-name"
+                  />
+                  <FormControl.HelpText>Default transformation to apply to selected assets</FormControl.HelpText>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <Checkbox
+                    name="allowUploads"
+                    id="allowUploads"
+                    isChecked={parameters.allowUploads}
+                    onChange={(e) => handleInputChange(e, e.target.checked)}
+                  >
+                    Allow Uploads
+                  </Checkbox>
+                </FormControl>
+
+                <FormControl marginTop="spacingM">
+                  <FormControl.Label>Media Quality</FormControl.Label>
+                  <Select
+                    name="mediaQuality"
+                    id="mediaQuality"
+                    value={parameters.mediaQuality}
+                    onChange={(e) => handleInputChange(e, e.target.value)}
+                  >
+                    {mediaQualityOptions.map(option => (
+                      <Select.Option key={option.value} value={option.value}>
+                        {option.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                  <FormControl.HelpText>Quality setting for all media assets</FormControl.HelpText>
+                </FormControl>
+              </Form>
+            </div>
+          )
+        }
       </div>
     </>
   );

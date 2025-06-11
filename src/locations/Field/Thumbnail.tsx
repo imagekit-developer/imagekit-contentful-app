@@ -1,5 +1,5 @@
 import { AssetCard, DateTime, DragHandle, Menu, MenuDivider, MenuItem } from '@contentful/f36-components';
-import { ExternalLinkIcon } from '@contentful/f36-icons';
+import { ExternalLinkIcon, DeleteIcon } from '@contentful/f36-icons';
 import tokens from '@contentful/f36-tokens';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -48,10 +48,20 @@ export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
             onClick={() => window.open(consoleUrl, "_blank")}
             style={{ fill: tokens.gray900 }}
           >
-            View on ImageKit <ExternalLinkIcon />
+            <img src={DEFAULT_INTEGRATION_PARAMETERS.logo} alt="" width={15} height={15} /> View on ImageKit
+          </MenuItem>,
+          <MenuItem 
+            key="live-preview" 
+            as="a" 
+            href={asset.url} 
+            target="_blank" 
+            onClick={() => window.open(asset.url, "_blank")}
+            style={{ fill: tokens.gray900 }}
+          >
+            <ExternalLinkIcon /> Preview in New Tab
           </MenuItem>,
           <MenuItem key="remove" onClick={onDelete} isDisabled={isDisabled}>
-            Remove
+            <DeleteIcon /> Remove
           </MenuItem>,
           <MenuDivider key="divider" />,
           <Menu.SectionTitle key="file-information-title">File information</Menu.SectionTitle>,
