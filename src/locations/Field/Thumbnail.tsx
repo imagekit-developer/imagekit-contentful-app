@@ -4,7 +4,7 @@ import tokens from '@contentful/f36-tokens';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import fileSize from 'file-size';
-import { ImageKitAsset } from '../../types/ImageKitAsset';
+import { ImageKitAsset } from '../../types';
 import { DEFAULT_INTEGRATION_PARAMETERS } from '../../constants';
 
 export function Thumbnail({ asset, isDisabled, onDelete }: Props) {

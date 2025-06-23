@@ -4,7 +4,7 @@ import { injectGlobal } from '@emotion/css';
 import { useEffect, useMemo } from 'react';
 import { FileTypeValue, ImagekitMediaLibraryWidget, MediaLibraryWidgetOptions, MLSettings } from 'imagekit-media-library-widget';
 import { DEFAULT_ML_WIDGET_OPTIONS } from '../constants';
-import { ImageKitAsset } from '../types/ImageKitAsset';
+import { ImageKitAsset } from '../types';
 
 const Dialog = () => {
   const sdk = useSDK<DialogAppSDK>();

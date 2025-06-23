@@ -3,7 +3,7 @@ import { AssetIcon } from '@contentful/f36-icons';
 import tokens from '@contentful/f36-tokens';
 import { useSDK } from '@contentful/react-apps-toolkit';
 import { useCallback } from 'react';
-import { ImageKitAsset } from '../../types/ImageKitAsset';
+import { ImageKitAsset } from '../../types';
 import { DEFAULT_INTEGRATION_PARAMETERS, DIALOG_TITLE } from '../../constants';
 import { buildSrc, Transformation } from '@imagekit/react';
 

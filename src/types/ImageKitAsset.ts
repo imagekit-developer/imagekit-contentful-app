@@ -1,42 +1,8 @@
-export interface CmFormValues {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | Date
-    | Array<string | number | boolean>
-    | any
-}
-
-export interface EmbeddedMetadataValues {
-  [key: string]:
-    | string
-    | number
-    | boolean
-    | Date
-    | Array<string | number | boolean | Date>
-}
-
-export interface AITagItem {
-  name: string
-  confidence: number
-  source: 'google-auto-tagging' | 'aws-auto-tagging'
-}
-
-export interface ExtensionStatus {
-  [key: string]: 'success' | 'pending' | 'failed'
-}
-
-export interface FileVersionInfo {
-  id: string
-  name: string
-}
-
-export interface CreatedBy {
-  userId: string
-  name: string
-  email: string
-}
+import { AITagItem } from './AITag';
+import { EmbeddedMetadataValues } from './Metadata';
+import { ExtensionStatus } from './ExtensionStatus';
+import { FileVersionInfo } from './FileVersion';
+import { CreatedBy } from './User';
 
 export interface ImageKitAsset {
   AITags: AITagItem[] | null

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { OpenDialogButton } from './OpenDialogButton';
 import { Thumbnails } from './Thumbnails';
 import { css, Global } from '@emotion/react';
-import { ImageKitAsset } from '../../types/ImageKitAsset';
+import { ImageKitAsset } from '../../types';
 
 const globalStyles = css`
   html {

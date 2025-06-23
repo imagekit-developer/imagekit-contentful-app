@@ -2,7 +2,7 @@ import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { useCallback, useMemo, useRef } from 'react';
 import { Thumbnail } from './Thumbnail';
-import { ImageKitAsset } from '../../types/ImageKitAsset';
+import { ImageKitAsset } from '../../types';
 
 export function Thumbnails({ assets, isDisabled, onChange }: Props) {
   const assetsIdMap = useRef(new WeakMap<ImageKitAsset, string>());
