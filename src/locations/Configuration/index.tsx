@@ -111,7 +111,7 @@ const ConfigScreen = () => {
         top: 0,
         width: '100%',
         height: '300px',
-        backgroundColor: '#f4b21b',
+        backgroundColor: '#0450d5',
       }} />
       <div style={{
         height: 'auto',
