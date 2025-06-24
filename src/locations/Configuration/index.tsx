@@ -46,8 +46,6 @@ const ConfigScreen = () => {
     // Get current the state of EditorInterface and other entities
     // related to this app installation
     const currentState = await sdk.app.getCurrentState();
-    console.log('currentState', currentState);
-    console.log('parameters', parameters);
 
     return {
       // Parameters to be persisted as the app configuration.

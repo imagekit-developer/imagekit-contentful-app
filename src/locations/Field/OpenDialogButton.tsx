@@ -27,8 +27,6 @@ export function OpenDialogButton({ onNewAssetsAdded, isDisabled }: Props) {
       return;
     }
 
-    console.log('sdk.parameters.installation', sdk.parameters.installation);
-
     const defaultTransformation = sdk.parameters.installation.defaultTransformation;
     const transformation: Transformation[] = defaultTransformation ? [{ raw: defaultTransformation }] : [];
 
@@ -55,8 +53,6 @@ export function OpenDialogButton({ onNewAssetsAdded, isDisabled }: Props) {
 
       return asset;
     });
-
-    console.log('transformedAssets', transformedAssets.map((asset: ImageKitAsset) => asset.url.split('tr=')[1]));
 
     onNewAssetsAdded(transformedAssets);
   }, [onNewAssetsAdded, sdk.dialogs]);

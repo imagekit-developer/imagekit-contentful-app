@@ -42,8 +42,6 @@ const Dialog = () => {
       },
     };
 
-    console.log('config', config);
-
     const callback = (payload: { eventType: string, data: ImageKitAsset[] }) => {
       if (payload.eventType === 'INSERT' && payload.data && payload.data.length > 0) {
         sdk.close(payload.data);
