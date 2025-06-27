@@ -7,6 +7,12 @@ import fileSize from 'file-size';
 import { ImageKitAsset } from '../../types';
 import { DEFAULT_INTEGRATION_PARAMETERS } from '../../constants';
 
+interface Props {
+  asset: ImageKitAsset & { id: string };
+  isDisabled: boolean;
+  onDelete: () => void;
+}
+
 export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
   const alt = [asset.name, ...(asset.tags ?? [])].join(', ');
   const url = asset.thumbnail || asset.url;
@@ -118,6 +124,25 @@ export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
                   }}>{asset.name.split('.').pop()?.toUpperCase() || 'Unknown'}</dd>
                 </>
               )}
+
+              {asset.imagekitId && (
+                <>
+                  <dt style={{
+                    color: tokens.gray700,
+                    marginRight: tokens.spacingXs,
+                    paddingTop: tokens.spacing2Xs,
+                    paddingBottom: tokens.spacing2Xs,
+                    float: 'left',
+                    clear: 'left',
+                  }}>ImageKit ID:</dt>
+                  <dd style={{
+                    marginLeft: 0,
+                    color: tokens.gray900,
+                    paddingTop: tokens.spacing2Xs,
+                    paddingBottom: tokens.spacing2Xs,
+                  }}>{asset.imagekitId}</dd>
+                </>
+              )}
               
               <dt style={{
                 color: tokens.gray700,
@@ -211,10 +236,4 @@ export function Thumbnail({ asset, isDisabled, onDelete }: Props) {
       />
     </div>
   );
-}
-
-interface Props {
-  asset: ImageKitAsset & { id: string };
-  isDisabled: boolean;
-  onDelete: () => void;
 }

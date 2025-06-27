@@ -25,6 +25,7 @@ export interface ImageKitAsset {
   type: string
   updatedAt: string
   url: string
+  imagekitId?: string
   width: number
   extensionStatus?: ExtensionStatus
   versionInfo: FileVersionInfo

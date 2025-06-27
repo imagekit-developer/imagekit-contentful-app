@@ -43,6 +43,7 @@ export function OpenDialogButton({ onNewAssetsAdded, isDisabled }: Props) {
       if (asset.fileType === 'image') {
         return {
           ...asset,
+          imagekitId: new URL(asset.url)?.pathname?.split('/')?.[1],
           url: buildSrc({
             src: asset.url,
             urlEndpoint: sdk.parameters.installation.urlEndpoint || '',

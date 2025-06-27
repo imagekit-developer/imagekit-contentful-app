@@ -4,19 +4,7 @@ import { useSDK } from '@contentful/react-apps-toolkit';
 import { ConfigAppSDK } from '@contentful/app-sdk';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@contentful/f36-icons';
-
-interface Parameters {
-  installationUuid: string;
-  urlEndpoint: string;
-  folderPath: string;
-  collectionId: string;
-  fileType: string;
-  searchQuery: string;
-  allowMultipleSelections: boolean;
-  maxFileSelections: string;
-  defaultTransformation: string;
-  mediaQuality: string;
-}
+import { Parameters } from '../../types';
 
 const DEFAULT_PARAMETERS: Parameters = {
   installationUuid: '',
