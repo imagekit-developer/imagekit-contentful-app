@@ -9,13 +9,23 @@ import { ImageKitAsset } from '../types';
 const Dialog = () => {
   const sdk = useSDK<DialogAppSDK>();
   const installationConfig: MLSettings = useMemo(() => {
+    let collectionId: { id?: string } | undefined = undefined;
+
+    if (sdk.parameters.installation.collectionId) {
+      if (sdk.parameters.installation.collectionId.toLowerCase().trim() === 'all') {
+        collectionId = {};
+      } else {
+        collectionId = { id: sdk.parameters.installation.collectionId };
+      }
+    }
+    
     return {
       multiple: sdk.parameters.installation.allowMultipleSelections,
       maxFiles: sdk.parameters.installation.maxFileSelections ? parseInt(sdk.parameters.installation.maxFileSelections) : undefined,
       initialView: {
         searchQuery: sdk.parameters.installation.searchQuery || '',
         folderPath: sdk.parameters.installation.folderPath || '/',
-        collection: sdk.parameters.installation.collectionId ? { id: sdk.parameters.installation.collectionId } : undefined,
+        collection: collectionId,
         fileType: sdk.parameters.installation.fileType ? sdk.parameters.installation.fileType as FileTypeValue : undefined,
       }
     };

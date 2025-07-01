@@ -258,7 +258,7 @@ const ConfigScreen = () => {
                     value={parameters.folderPath}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                   />
-                  <FormControl.HelpText>The folder to open when the Media Library Widget is opened. (Default: <code style={codeBlockStyle}>/</code> i.e. the root folder)</FormControl.HelpText>
+                  <FormControl.HelpText>The folder to open when the Media Library Widget is opened. (Default: <code style={codeBlockStyle}>/</code> i.e. the root folder).</FormControl.HelpText>
                 </FormControl>
 
                 <FormControl marginTop="spacingM">
@@ -269,7 +269,7 @@ const ConfigScreen = () => {
                     value={parameters.collectionId}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
                   />
-                  <FormControl.HelpText>The ID of the specific collection to open when the Media Library Widget is opened. (Leave this blank if you do not want to open any collection)</FormControl.HelpText>
+                  <FormControl.HelpText>The ID of the specific collection to open when the Media Library Widget is opened. (Leave this blank if you do not want to open any collection, use <code style={codeBlockStyle}>all</code> to open a list of all collections)</FormControl.HelpText>
                 </FormControl>
 
                 <FormControl marginTop="spacingM">
