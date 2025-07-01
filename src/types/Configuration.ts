@@ -1,6 +1,5 @@
 export interface Parameters {
   installationUuid: string;
-  urlEndpoint: string;
   folderPath: string;
   collectionId: string;
   fileType: string;

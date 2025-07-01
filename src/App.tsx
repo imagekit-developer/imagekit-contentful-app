@@ -23,7 +23,7 @@ const App = () => {
     }
   }, [sdk.location]);
 
-  return Component ? <ImageKitProvider urlEndpoint={sdk.parameters.installation.urlEndpoint || ''}><Component /></ImageKitProvider> : null;
+  return Component ? <ImageKitProvider urlEndpoint={''}><Component /></ImageKitProvider> : null;
 };
 
 export default App;

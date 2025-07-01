@@ -19,7 +19,7 @@ const Dialog = () => {
         fileType: sdk.parameters.installation.fileType ? sdk.parameters.installation.fileType as FileTypeValue : undefined,
       }
     };
-  }, [sdk.parameters.installation]);
+  }, [sdk]);
 
   useEffect(() => {
     // style `body`

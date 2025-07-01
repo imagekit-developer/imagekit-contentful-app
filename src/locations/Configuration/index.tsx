@@ -5,10 +5,12 @@ import { ConfigAppSDK } from '@contentful/app-sdk';
 import { useCallback, useEffect, useState } from 'react';
 import { ChevronDownIcon, ChevronUpIcon } from '@contentful/f36-icons';
 import { Parameters } from '../../types';
+import { editorInterfacesToSelectedFields, SelectedFields, selectedFieldsToTargetState } from './fields';
+import { ContentTypeProps } from 'contentful-management';
+import { FieldSelector } from './FieldSelector';
 
 const DEFAULT_PARAMETERS: Parameters = {
   installationUuid: '',
-  urlEndpoint: '',
   folderPath: '/',
   collectionId: '',
   fileType: '',
@@ -25,6 +27,8 @@ const ConfigScreen = () => {
   const sdk = useSDK<ConfigAppSDK>();
   const [parameters, setParameters] = useState<Parameters>(DEFAULT_PARAMETERS);
   const [showAdvancedConfiguration, setShowAdvancedConfiguration] = useState(false);
+  const [contentTypes, setContentTypes] = useState<ContentTypeProps[]>([]);
+  const [selectedFields, setSelectedFields] = useState<SelectedFields>({});
 
   const onConfigure = useCallback(async () => {
     // This method will be called when a user clicks on "Install"
@@ -33,7 +37,7 @@ const ConfigScreen = () => {
 
     // Get current the state of EditorInterface and other entities
     // related to this app installation
-    const currentState = await sdk.app.getCurrentState();
+    // const currentState = await sdk.app.getCurrentState();
 
     return {
       // Parameters to be persisted as the app configuration.
@@ -43,9 +47,9 @@ const ConfigScreen = () => {
       },
       // In case you don't want to submit any update to app
       // locations, you can just pass the currentState as is
-      targetState: currentState,
+      targetState: selectedFieldsToTargetState(contentTypes, selectedFields),
     };
-  }, [parameters, sdk]);
+  }, [parameters, sdk, contentTypes, selectedFields]);
 
   useEffect(() => {
     // `onConfigure` allows to configure a callback to be
@@ -58,7 +62,11 @@ const ConfigScreen = () => {
     (async () => {
       // Get current parameters of the app.
       // If the app is not installed yet, `parameters` will be `null`.
-      const currentParameters: Parameters | null = await sdk.app.getParameters<Parameters>();
+      const [currentParameters, contentTypesResponse, editorInterfacesResponse] = await Promise.all([
+        sdk.app.getParameters<Parameters>(),
+        sdk.cma.contentType.getMany({}),
+        sdk.cma.editorInterface.getMany({}),
+      ]);
 
       if (currentParameters) {
         setParameters({
@@ -66,6 +74,12 @@ const ConfigScreen = () => {
           ...currentParameters,
         });
       }
+
+      if (contentTypesResponse) {
+        setContentTypes(contentTypesResponse.items);
+      }
+
+      setSelectedFields(editorInterfacesToSelectedFields(editorInterfacesResponse.items, sdk.ids.app));
 
       // Once preparation has finished, call `setReady` to hide
       // the loading screen and present the app to a user.
@@ -143,25 +157,23 @@ const ConfigScreen = () => {
         
         <Heading as="h2" marginTop="spacingL">Quickstart</Heading>
         <Paragraph>
-          Getting started with ImageKit is easy and takes less than a minute. To start using this integration, you need to provide your ImageKit URL Endpoint, which can be found in the <a href="https://imagekit.io/dashboard/developer/api-keys" target="_blank" rel="noopener noreferrer">Developer options</a> on your ImageKit Dashboard.
+          Getting started with ImageKit is easy and takes less than a minute. To start using this integration, you
+          just need to install it to your Contentful space and start using it in your models and entries by selecting the <strong>JSON Object</strong> field type.
         </Paragraph>
 
-        <Form style={{ marginTop: tokens.spacingL }}>
-          <FormControl isRequired marginTop="spacingM">
-            <FormControl.Label>URL Endpoint</FormControl.Label>
-            <TextInput
-              name="urlEndpoint"
-              id="urlEndpoint"
-              value={parameters.urlEndpoint}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, e.target.value)}
-            />
-            <FormControl.HelpText>Your ImageKit URL endpoint should look like <code style={codeBlockStyle}>https://ik.imagekit.io/&lt;your_imagekit_id&gt;</code></FormControl.HelpText>
-          </FormControl>
-        </Form>
-        
+        <FieldSelector
+          space={sdk.ids.space}
+          environment={sdk.ids.environmentAlias ?? sdk.ids.environment}
+          contentTypes={contentTypes}
+          selectedFields={selectedFields}
+          onSelectedFieldChanged={setSelectedFields}
+        />
+
         <Paragraph>
-          Once you have set up your URL endpoint, you can start using ImageKit directly in your content models and entries by selecting the "JSON Object" field type.
-          <br /><br />
+          To understand how to configure the plugin and use it in your entries, refer to the <a href="https://imagekit.io/docs/integration/contentful" target="_blank">official documentation</a>.
+        </Paragraph>
+
+        <Paragraph>
           In case you&apos;d like to configure the media library widget, you can do so in the advanced configuration below.
         </Paragraph>
 

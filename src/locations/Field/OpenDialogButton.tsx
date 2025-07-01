@@ -46,7 +46,7 @@ export function OpenDialogButton({ onNewAssetsAdded, isDisabled }: Props) {
           imagekitId: new URL(asset.url)?.pathname?.split('/')?.[1],
           url: buildSrc({
             src: asset.url,
-            urlEndpoint: sdk.parameters.installation.urlEndpoint || '',
+            urlEndpoint: '',
             transformation,
           }),
         };
